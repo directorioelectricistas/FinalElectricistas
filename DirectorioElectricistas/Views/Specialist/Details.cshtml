@@ -1,0 +1,116 @@
+﻿@model DirectorioElectricistas.Models.Specialist
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h3>Detalles</h3>
+<p>
+    En esta sección, podrás acceder a la información detallada del especialista seleccionado.
+
+</p>
+<div>
+    
+    <hr />
+
+    
+
+    <div class="form-group d-flex justify-content-start align-items-center mb-3">
+        @using (Html.BeginForm("Create", "Note", FormMethod.Get, new { id = "formAgregarCalificacion" }))
+        {
+            @Html.Hidden("id", Model.Id)
+            <button type="submit" class="btn btn-warning">
+                Agregar calificación
+            </button>
+        }
+        
+        <a asp-action="Index" class="btn btn-secondary ms-2">Regresar</a>
+    </div>
+
+    <dl class="row">
+        <dt class="col-sm-2">
+            Nombre
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            Número de contacto
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Number)
+        </dd>
+        <dt class="col-sm-2">
+            Correo electrónico
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Email
+        </dd>
+        <dt class="col-sm-2">
+            Departamento
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Place)
+        </dd>
+        <dt class="col-sm-2">
+            Municipio
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MainPlace)
+        </dd>
+        
+        <dt class="col-sm-2">
+            Calificación
+        </dt>
+        <dd class="col-sm-10 d-flex align-items-center">
+            @{
+                double qualificationValue;
+                bool isNumeric = double.TryParse(Model.Qualification, out qualificationValue);
+            }
+            @if (!isNumeric || qualificationValue == 0)
+            {
+                <span>Sin calificación</span>
+            }
+            else
+            {
+                <div class="star-rating">
+                    <span class="filled" style="width:@((qualificationValue / 5.0) * 100)%">
+                        &#9733;&#9733;&#9733;&#9733;&#9733;
+                    </span>
+                    <span>
+                        &#9733;&#9733;&#9733;&#9733;&#9733;
+                    </span>
+                </div>
+            }
+        </dd>
+    </dl>
+    
+    <hr />
+</div>
+
+
+@if(Model.Notes != null){
+    <h3>Calificaciones</h3>
+
+    <table class="table">
+        <thead>
+            <th>Valor</th>
+            <th>Observación</th>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Notes)
+            {
+               <tr>
+                   <td>@Html.DisplayFor(modelItem => item.Value)</td>
+                   <td>@Html.DisplayFor(modelItem => item.Observation)</td>
+               </tr>
+            }
+        </tbody>
+
+    </table>
+}
+
+
+
+
+
